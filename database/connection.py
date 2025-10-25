@@ -11,20 +11,28 @@ async def init_db():
         # Определяем окружение (локальная разработка или Amvera)
         is_production = os.getenv("AMVERA_ENVIRONMENT", "false").lower() == "true"
         
-        # Создаем необходимые папки
-        if is_production:
-            # На Amvera Cloud - используем /data (постоянное хранилище)
-            os.makedirs('/data', exist_ok=True)
-            DATABASE_URL = "sqlite+aiosqlite:////data/delivery_bot.db"
-            logger.info("🚀 Запуск в production режиме (Amvera)")
-        else:
-            # Локально - используем database/
-            os.makedirs('database', exist_ok=True)
-            DATABASE_URL = "sqlite+aiosqlite:///database/delivery_bot.db"
-            logger.info("💻 Запуск в локальном режиме")
+        # Всегда используем папку /data для всего
+        data_dir = "/data"
+        os.makedirs(data_dir, exist_ok=True)
         
-        # Папка для логов (всегда создаём)
-        os.makedirs('logs', exist_ok=True)
+        # Пути для базы данных и логов внутри /data
+        database_path = f"{data_dir}/delivery_bot.db"
+        logs_dir = f"{data_dir}/logs"
+        
+        # Создаем подпапку для логов
+        os.makedirs(logs_dir, exist_ok=True)
+        
+        # URL для базы данных
+        DATABASE_URL = f"sqlite+aiosqlite:///{database_path}"
+        
+        if is_production:
+            logger.info("🚀 Запуск в production режиме (Amvera)")
+            logger.info(f"📁 База данных: {database_path}")
+            logger.info(f"📁 Логи: {logs_dir}/")
+        else:
+            logger.info("💻 Запуск в локальном режиме")
+            logger.info(f"📁 База данных: {database_path}")
+            logger.info(f"📁 Логи: {logs_dir}/")
         
         # Создание движка базы данных
         engine = create_async_engine(
@@ -37,7 +45,7 @@ async def init_db():
         async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
         
-        logger.info(f"✅ База данных успешно инициализирована: {DATABASE_URL}")
+        logger.info(f"✅ База данных успешно инициализирована: {database_path}")
         return engine
         
     except Exception as e:

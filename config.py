@@ -1,8 +1,7 @@
 import os
 import logging
-from aiogram import Bot
 from dotenv import load_dotenv
-
+from aiogram import Bot
 
 # Загрузка переменных окружения
 load_dotenv()
@@ -10,7 +9,6 @@ load_dotenv()
 # Настройки бота
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 MANAGER_CHAT_ID = os.getenv("MANAGER_CHAT_ID")
-DATABASE_URL = "sqlite+aiosqlite:///database/delivery_bot.db"
 
 # Проверка обязательных переменных
 if not BOT_TOKEN:
@@ -22,6 +20,9 @@ if not MANAGER_CHAT_ID:
 # Создаем экземпляр бота
 bot = Bot(token=BOT_TOKEN)
 
+# Всегда используем /data/logs для логов
+LOG_DIR = "/data/logs"
+os.makedirs(LOG_DIR, exist_ok=True)
 
 class CustomFormatter(logging.Formatter):
     """Кастомный форматтер для цветного вывода в консоль"""
@@ -59,16 +60,14 @@ def setup_logging():
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
     
-    # Создаем папку для логов если её нет
-    os.makedirs('logs', exist_ok=True)
-    
     # Хендлер для консоли с цветами
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)
     console_handler.setFormatter(CustomFormatter())
     
-    # Хендлер для файла без цветов
-    file_handler = logging.FileHandler('logs/delivery_bot.log', encoding='utf-8')
+    # Хендлер для файла в /data/logs
+    log_file = f"{LOG_DIR}/delivery_bot.log"
+    file_handler = logging.FileHandler(log_file, encoding='utf-8')
     file_handler.setLevel(logging.INFO)
     file_formatter = logging.Formatter(
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
