@@ -5,6 +5,7 @@ from keyboards import manager_delivery_kb
 from config import MANAGER_CHAT_ID, bot
 from sqlalchemy.ext.asyncio import AsyncSession
 from utils.logger import get_logger
+from utils.monitoring import get_monitor
 
 logger = get_logger(__name__)
 router = Router()
@@ -47,6 +48,37 @@ async def view_orders(message: types.Message, session: AsyncSession):
     except Exception as e:
         logger.error(f"Ошибка при получении списка заказов: {e}")
         await message.answer("Произошла ошибка при получении списка заказов")
+
+
+@router.message(Command("status"))
+async def cmd_status(message: types.Message):
+    """Команда /status - показать статус бота и сервера"""
+    # Проверка, что команду отправил менеджер
+    if str(message.chat.id) != MANAGER_CHAT_ID:
+        return
+    
+    monitor = get_monitor()
+    if monitor:
+        await monitor.send_status_report()
+    else:
+        await message.answer("⚠️ Мониторинг не инициализирован")
+
+
+@router.message(Command("ping"))
+async def cmd_ping(message: types.Message):
+    """Команда /ping - быстрая проверка работоспособности"""
+    if str(message.chat.id) != MANAGER_CHAT_ID:
+        return
+    
+    monitor = get_monitor()
+    uptime = monitor.get_uptime() if monitor else "N/A"
+    
+    await message.answer(
+        f"🟢 <b>Бот работает!</b>\n"
+        f"⏱ Uptime: {uptime}",
+        parse_mode="HTML"
+    )
+
 
 @router.callback_query(F.data.startswith("manager_verify_payment_"))
 async def manager_verify_payment(callback: types.CallbackQuery, session: AsyncSession):
@@ -223,3 +255,4 @@ async def manager_complete_delivery(callback: types.CallbackQuery, session: Asyn
     else:
         logger.warning(f"⚠️ Заказ {order_id} не найден при попытке завершения менеджером {manager_id}")
         await callback.answer("Заказ не найден")
+        
