@@ -95,7 +95,7 @@ async def process_phone_contact(message: types.Message, state: FSMContext):
     await state.set_state(OrderStates.waiting_for_order_screenshot)
     
     await message.answer(
-        "📸 Теперь отправьте скриншот вашего заказа из приложения KFC/Вкусно и точка:",
+        "📸 Теперь отправьте скриншот вашего заказа из приложения KFC/Burger King:",
         reply_markup=cancel_kb()
     )
 
