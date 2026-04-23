@@ -539,7 +539,7 @@ mypy .
 
 ## 👥 Автор
 
-**IsDarkByte** — Full Stack Developer
+**IsDarkByte**
 
 - 🐙 GitHub: [@IsDarkByte](https://github.com/IsDarkByte)
 - 💬 Telegram: [@IsDarkByte](https://t.me/IsDarkByte)
