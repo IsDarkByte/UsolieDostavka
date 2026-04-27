@@ -5,7 +5,8 @@
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Aiogram](https://img.shields.io/badge/Aiogram-3.x-blue.svg)](https://docs.aiogram.dev/)
 [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0-red.svg)](https://www.sqlalchemy.org/)
-[![License](https://img.shields.io/badge/License-Proprietary-yellow.svg)](#-лицензия)
+[![License: MIT](https://shields.io)](https://opensource.org)
+
 
 ---
 
@@ -529,11 +530,11 @@ mypy .
 
 ## 📄 Лицензия
 
-**Copyright © 2025 [IsDarkByte](https://github.com/IsDarkByte). All Rights Reserved.**
+Copyright (c) 2025 [IsDarkByte](https://github.com/IsDarkByte)
 
-Данное программное обеспечение является проприетарным. Запрещается копирование, распространение или использование без письменного разрешения правообладателя.
+Данное программное обеспечение распространяется на условиях лицензии **MIT**. Вы можете свободно использовать, копировать, изменять и распространять его при условии сохранения уведомления об авторских правах.
 
-Для получения лицензии свяжитесь с автором.
+Полный текст лицензии доступен в файле [LICENSE](./LICENSE).
 
 ---
 
