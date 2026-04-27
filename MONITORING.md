@@ -266,17 +266,6 @@ await asyncio.sleep(12 * 60 * 60)  # 12 часов вместо 6
 - Дашборды
 - https://grafana.com/products/cloud/
 
-## ✅ Чек-лист готовности
-
-- [ ] Файл `utils/monitoring.py` создан
-- [ ] Файл `main.py` обновлён
-- [ ] Команды `/status` и `/ping` добавлены в `manager.py`
-- [ ] `psutil` добавлен в `requirements.txt`
-- [ ] Код загружен на Amvera
-- [ ] Получено уведомление о запуске бота
-- [ ] Команда `/status` работает
-- [ ] Команда `/ping` работает
-
 ---
 
 <div align="center">
